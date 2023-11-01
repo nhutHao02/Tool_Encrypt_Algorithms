@@ -11,15 +11,11 @@ import java.io.FileOutputStream;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-public class Des {
+public class AES {
     private SecretKey secretKey;
-
-    public Des() {
-    }
-
     public SecretKey createDesKey() throws NoSuchAlgorithmException {
-        KeyGenerator keyGenerator = KeyGenerator.getInstance("DES");
-        keyGenerator.init(56);
+        KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+        keyGenerator.init(128);
         this.secretKey = keyGenerator.generateKey();
         return this.secretKey;
     }
@@ -28,7 +24,7 @@ public class Des {
         if (this.secretKey == null) {
             return new byte[0];
         } else {
-            Cipher cipher = Cipher.getInstance("DES");
+            Cipher cipher = Cipher.getInstance("AES");
             cipher.init(1, this.secretKey);
             byte[] cipherText = cipher.doFinal(input.getBytes("UTF-8"));
             System.out.println("Encrypted: " + Base64.getEncoder().encodeToString(cipherText));
@@ -40,7 +36,7 @@ public class Des {
         if (this.secretKey == null) {
             return null;
         } else {
-            Cipher cipher = Cipher.getInstance("DES");
+            Cipher cipher = Cipher.getInstance("AES");
             cipher.init(2, this.secretKey);
             byte[] plainText = cipher.doFinal(ciphertext);
             return new String(plainText, "UTF-8");
@@ -51,7 +47,7 @@ public class Des {
         if (this.secretKey == null) {
             return null;
         } else {
-            Cipher cipher = Cipher.getInstance("DES");
+            Cipher cipher = Cipher.getInstance("AES");
             cipher.init(1, this.secretKey);
             byte[] encryptedText = cipher.doFinal(input.getBytes("UTF-8"));
             String resultEncrypt = Base64.getEncoder().encodeToString(encryptedText);
@@ -64,7 +60,7 @@ public class Des {
             return null;
         } else {
             byte[] cipherText = Base64.getDecoder().decode(cipherTextInput);
-            Cipher cipher = Cipher.getInstance("DES");
+            Cipher cipher = Cipher.getInstance("AES");
             cipher.init(2, this.secretKey);
             byte[] decryptedText = cipher.doFinal(cipherText);
             String reusultDecrypt = new String(decryptedText, "UTF-8");
@@ -78,7 +74,7 @@ public class Des {
         } else {
             File file = new File(srcFile);
             if (file.isFile()) {
-                Cipher cipher = Cipher.getInstance("DES");
+                Cipher cipher = Cipher.getInstance("AES");
                 cipher.init(1, this.secretKey);
                 FileInputStream fis = new FileInputStream(file);
                 FileOutputStream fos = new FileOutputStream(new File(desFile));
@@ -114,7 +110,7 @@ public class Des {
         } else {
             File file = new File(srcFile);
             if (file.isFile()) {
-                Cipher cipher = Cipher.getInstance("DES");
+                Cipher cipher = Cipher.getInstance("AES");
                 cipher.init(2, this.secretKey);
                 FileInputStream fis = new FileInputStream(file);
                 FileOutputStream fos = new FileOutputStream(new File(desFile));
@@ -150,24 +146,24 @@ public class Des {
 
     public void importKey(String key) {
         byte[] decodeKey = Base64.getDecoder().decode(key);
-        this.secretKey = new SecretKeySpec(decodeKey, 0, decodeKey.length, "DES");
+        this.secretKey = new SecretKeySpec(decodeKey, 0, decodeKey.length, "AES");
     }
 
     public static void main(String[] args) throws Exception {
         String plaintext = "This is a simple DES encryption example.";
-        Des DES = new Des();
+        AES aes=new AES();
         String input = "Israel chuẩn bị tấn công trên bộ, kêu gọi tất cả dân Gaza di dời trong 24 giờ";
-        SecretKey desKey = DES.createDesKey();
-//        byte[] cipher=DES.encrypt(input);
-//        System.out.printf(DES.decrypt(cipher));
+        SecretKey desKey = aes.createDesKey();
+//        byte[] cipher=aes.encrypt(input);
+//        System.out.printf(aes.decrypt(cipher));
 
-        String cipher=DES.encryptBase64(input);
+        String cipher=aes.encryptBase64(input);
         System.out.printf(cipher);
         System.out.println();
-        System.out.printf(DES.decryptBase64(cipher));
+        System.out.printf(aes.decryptBase64(cipher));
 //        String path="D:\\SV\\Code\\TEs\\src\\Main.java";
-//        DES.encryptFile(path,"D:\\SV\\Code\\TEs\\src\\Main1.java");
-//        DES.decryptFile("D:\\SV\\Code\\TEs\\src\\Main1.java","D:\\SV\\Code\\TEs\\src\\Main2.java");
+//        aes.encryptFile(path,"D:\\SV\\Code\\TEs\\src\\Main1.java");
+//        aes.decryptFile("D:\\SV\\Code\\TEs\\src\\Main1.java","D:\\SV\\Code\\TEs\\src\\Main2.java");
 
 
     }

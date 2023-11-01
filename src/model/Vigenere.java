@@ -81,19 +81,23 @@ public class Vigenere {
         this.type = type;
     }
 
-    public String generateKey(String text,String key){
-        StringBuilder sb=new StringBuilder();
-        int i=0;
-        while (i<text.length()){
-            if(i==key.length()) i=0;
-            sb.append(key.charAt(i));
-            if (sb.length()==text.length()) {
-                break;
-            }else {
-                i+=1;
+    public String generateLenghKey(String text, String key){
+        if(key.length()!=text.length()){
+            StringBuilder sb=new StringBuilder();
+            int i=0;
+            while (i<text.length()){
+                if(i==key.length()) i=0;
+                sb.append(key.charAt(i));
+                if (sb.length()==text.length()) {
+                    break;
+                }else {
+                    i+=1;
+                }
             }
+            return sb.toString();
         }
-        return sb.toString();
+
+        return key;
     }
 
     public int checkIndex(char c){
@@ -107,7 +111,7 @@ public class Vigenere {
    }
     public String encrypt(String plaintext, String key) {
         StringBuilder ciphertext = new StringBuilder();
-        key=generateKey(plaintext,key);
+        key= generateLenghKey(plaintext,key);
         for (int i = 0; i < plaintext.length(); i++) {
             char ch=plaintext.charAt(i);
             // kiểm tra phải là ký tự hay không
@@ -135,7 +139,7 @@ public class Vigenere {
 
     public String decrypt(String ciphertext, String key) {
         StringBuilder plaintext = new StringBuilder();
-        key=generateKey(ciphertext,key);
+        key= generateLenghKey(ciphertext,key);
         for (int i = 0; i < ciphertext.length(); i++) {
             char ch=ciphertext.charAt(i);
             // kiểm tra phải là ký tự hay không
