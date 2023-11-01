@@ -19,37 +19,72 @@ public class GUI_Frame extends JFrame implements ActionListener {
     JTabbedPane jTabbedPane;
 
     public GUI_Frame() {
+
+        // menu bar
         JMenuBar jMenuBar = new JMenuBar();
-        this.menu = new JMenu("Trang Chủ");
-        this.itemHome = new JMenuItem("Trang chủ");
-        this.itemExit = new JMenuItem("Exit");
-        this.menu.add(this.itemHome);
-        this.menu.add(this.itemExit);
-        this.menuLanguage = new JMenu("Ngôn ngữ");
-        this.itemVi = new JMenuItem("Việt Nam");
-        this.itemEn = new JMenuItem("Tiếng Anh");
-        this.menuLanguage.add(this.itemVi);
-        this.menuLanguage.add(this.itemEn);
-        jMenuBar.add(this.menu);
-        jMenuBar.add(this.menuLanguage);
-        this.setJMenuBar(jMenuBar);
-        this.cardLayout = new CardLayout();
-        this.cardPanel = new JPanel(this.cardLayout);
-        this.jpnHome = new JPanel();
-        this.startButton = new JButton("Bắt đầu");
-        this.jpnHome.add(this.startButton);
-        this.jTabbedPane = new JTabbedPane(3);
-        this.jTabbedPane.addTab("Giải Thuật Đối Xứng", this.createT());
+        menu = new JMenu("Trang Chủ");
+        itemHome = new JMenuItem("Trang chủ");
+        itemExit = new JMenuItem("Exit");
+        menu.add(itemHome);
+        menu.add(itemExit);
+        menuLanguage = new JMenu("Ngôn ngữ");
+        itemVi = new JMenuItem("Việt Nam");
+        itemEn = new JMenuItem("Tiếng Anh");
+        menuLanguage.add(itemVi);
+        menuLanguage.add(itemEn);
+        jMenuBar.add(menu);
+        jMenuBar.add(menuLanguage);
+        setJMenuBar(jMenuBar);
+        // thêm cardlayout quản lí panel
+        cardLayout = new CardLayout();
+        cardPanel = new JPanel(cardLayout);
+        //panel home
+        jpnHome = new JPanel(new GridLayout(2,1));
+        JPanel jpnHomeItem1=new JPanel(new BorderLayout());
+        JPanel jpnHomeItem2=new JPanel();
+        startButton = new JButton("Bắt đầu");
+        ImageIcon imageIcon= new ImageIcon("images/hack.png");
+        Image originalImage = imageIcon.getImage();
+
+        // Điều chỉnh kích thước của hình ảnh
+        int newWidth = 200; // Điều chỉnh kích thước rộng theo nhu cầu của bạn
+        int newHeight = 200; // Điều chỉnh kích thước cao theo nhu cầu của bạn
+        Image resizedImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+
+// Tạo một ImageIcon từ hình ảnh đã điều chỉnh kích thước
+        ImageIcon resizedImageIcon = new ImageIcon(resizedImage);
+        JLabel jl=new JLabel(resizedImageIcon,SwingConstants.CENTER);
+        jpnHomeItem1.add(jl, BorderLayout.CENTER);
+        jpnHomeItem2.add(startButton);
+        jpnHome.add(jpnHomeItem1);
+        jpnHome.add(jpnHomeItem2, BOTTOM_ALIGNMENT);
+
+        jTabbedPane = new JTabbedPane(3);
+        // tab1
+        jTabbedPane.addTab("Giải Thuật Đối Xứng", createT());
+        //tab2
         JPanel tab2 = new JPanel();
         tab2.add(new JLabel("Nội dung của Tab 2"));
-        this.jTabbedPane.addTab("Giải Thuật Bất Đối Xứng", tab2);
-        this.cardPanel.add(this.jpnHome, "HOME");
-        this.cardPanel.add(this.jTabbedPane, "TABS");
-        this.add(this.cardPanel);
-        this.startButton.addActionListener(this::actionPerformed);
-        this.setDefaultCloseOperation(3);
-        this.setSize(400, 300);
-        this.setVisible(true);
+        jTabbedPane.addTab("Giải Thuật Bất Đối Xứng", tab2);
+
+        // thêm panel vào cardLayout
+        cardPanel.add(jpnHome, "HOME");
+        cardPanel.add(jTabbedPane, "TABS");
+
+        // thêm card vào frame
+        add(cardPanel);
+
+        //event
+        startButton.addActionListener(this);
+        itemHome.addActionListener(this);
+        //setDefault
+
+        ImageIcon iconTitle = new ImageIcon("images/Logo_HCMUAF.png");
+        setIconImage(iconTitle.getImage());
+        setTitle("ĐỒ ÁN GIỮA KỲ");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(800, 600);
+        setVisible(true);
     }
 
     private JPanel createT() {
@@ -67,8 +102,11 @@ public class GUI_Frame extends JFrame implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == this.startButton) {
-            this.cardLayout.show(this.cardPanel, "TABS");
+        if (e.getSource() == startButton) {
+            cardLayout.show(cardPanel, "TABS");
+        }
+        if(e.getSource()== itemHome){
+            cardLayout.show(cardPanel, "HOME");
         }
 
     }
